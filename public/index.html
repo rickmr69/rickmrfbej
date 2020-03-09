@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!-- Todos los archivos HTML 5 empiezan con la línea de arriba.
+
+  Esta estructura es un comentario y normalmente explica una sección de
+  código.
+
+  Las páginas HTML están formadas por estructuras como las siguientes:
+
+  * Element con contenido: usan una etiqueta inicial, una etiqueta final y
+   un contenido. Tienen una estructura como la siguiente:
+  <element atributo1="valor1" atributo2="valor2">
+    contenido
+  </element>
+
+  * Element sin contenido: solo usan una etiqueta inicial y tienen una
+   estructura como la siguiente:
+  <element atributo1="valor1" atributo2="valor2">
+
+  * Texto
+
+  * Comentarios como este
+
+  element se refiere al tipo de información que representa la estructura,
+  como pueden ser entre otros:
+    * html: para la estructura completa de una página
+    * h1: el título de una página
+    * p: un párrafo de texto
+  
+  Los atributos son características de un element a las que se les asocia
+  un valor. Los atributos son opcionales y no hay límite al número de
+  ellos que puede contener la etiqueta inicial, aunque en los ejemplos
+  anteriores solo se hayan puesto2.
+
+  Algunos atributos son boolean y solo se pone el nombre, sin su valor,
+  lo cual significa que esa característica si aplica para el element.
+
+  El contenido de un element son otros element, texto y comentarios. -->
+<html>
+  <head>
+    <!-- Se indica que la codificación es UTF-8. Ver http://unicode.org/
+    -->
+    <meta charset="UTF-8">
+    <!-- Texto que se muestra en el título de la ventana o en la pestaña
+    del navegador.-->
+    <title>Saludo Web 2.0</title>
+     <!-- update the version number as needed -->
+     <script defer src="/__/firebase/7.10.0/firebase-app.js"></script>
+     <!-- include only the Firebase features as you need -->
+     <script defer src="/__/firebase/7.10.0/firebase-auth.js"></script>
+     <script defer src="/__/firebase/7.10.0/firebase-database.js"></script>
+     <script defer src="/__/firebase/7.10.0/firebase-messaging.js"></script>
+     <script defer src="/__/firebase/7.10.0/firebase-storage.js"></script>
+     <!-- initialize the SDK after all desired features are loaded -->
+     <script defer src="/__/firebase/init.js"></script>
+    <!-- Para mostrar la página en dispositivos móviles.
+
+    name="viewport"
+    Define las características de la pantalla de un dispositivo móvil.
+    
+    width=device-width
+    El tamaño del viewport es el equivalente al ancho de la pantalla en
+    píxeles CSS en una escala de 100%.
+    
+    initial-scale=1
+    Inicia sin hacer zoom. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Hoja de estilo, que permite cambiar la apariencia de la página.
+    -->
+    <style>
+      /* Una hoja de estilos define reglas. Cada regla tiene una
+       * estructura como esta:
+       *    selector {atributo1: valor1; atributo2: valor2; ...}
+       * la sección entre { y } se conoce como bloque de declaraciones.
+       *
+       * Los atributos y sus valores definen la apariencia de los element
+       * que coinciden con los selectores.
+       *
+       * body {font-famly: sans-serif}
+       * El tipo de selector más simple es el nombre de un element. La
+       * regla se aplica a todas las veces que aparezca ese element en la
+       * página. En este caso se selecciona el element body.
+       *
+       * font-family: sans-serif
+       * Se un font predefinido por el navegador web que tenga la
+       * característica sans-serifa (sin serifas o remates).
+       * Las serifas o remates son pequeños adornos que se ponen en los
+       * extremos de las líneas de los caracteres.
+       * Ejemplos de fonts con serifa son: Times New Roman, Times,
+       * Garamond y Courier. Se aplican principalmente a textos largos y
+       * párrafos.
+       * Ejemplos de fonts sin serifa son: Arial y Helvética. Se aplican
+       * principalmente en textos cortos e interfaces de usuario.
+       * El atributo font-family se hereda a casi tode el contenido del
+       * element indicado por el selector. En este caso es a casi toda la
+       * página. */
+       body {font-family: sans-serif}
+    </style>
+  </head>
+  <body>
+    <h1>Saludo Web 2.0</h1>
+    <!-- Forma de procesamiento.
+ 
+    name="vista"
+    nombre de esta forma dentro del documento. Solo hay que usar
+    document.vista desde EcmaScript. -->
+    <form name="vista">
+      <p>
+        <!-- Campo de captura de texto. Atributos:
+        
+        type="text"
+        Indica que el campo input sirve para capturar texto en general.
+        
+        name="nombre1" 
+        Nombre del campo de texto dentro de la forma. Se utiliza para
+        procesar su valor.
+ 
+        placeholder="Nombre 1"
+        Texto conocido como sello de agua. Cuando el elemento no tiene
+        valor, se muestra el valor de placeholder. Cuando sí tiene valor,
+        el sello de agua se quita y se pone el valor del elemento.
+ 
+        accesskey="1"
+        Tecla de acceso rápido. En Windows y Linux se activa en
+        combinación con la tecla ALT. -->
+        <input type="text" name="nombre1" placeholder="Nombre 1"
+                accesskey="1">
+      </p>
+      <p>
+        <input type="text" name="nombre2" placeholder="Nombre 2"
+                accesskey="2">
+      </p>
+      <p>
+        <!-- La etiqueta output se usa para mostrar los resultados
+        generados por la página. -->
+        <output name="respuesta"></output>
+      </p>
+      <p>
+        <!-- botón para activar la forma cuyo texto es Saludar.
+
+        type="submit"
+        Indica que la activación del botón, activa la forma. -->
+        <button type="submit">Saludar</button>
+      </p>
+    </form>
+    <!-- Incorpora el script controlador a la página. -->
+    <script>
+      /* Muestra aviso o error al usar las características no recomendadas
+       * de JavaScript */
+      "use strict";
+      /* Se obtiene una referencia a la form cuyo name es vista. Como es
+       * const, no cambia su valor posteriormente. */
+      const vista = document.vista;
+      let respuesta;
+      /* Todos los element de HTML reciben eventos, tales como un clic,
+       * la presión de una tecla, el movimiento del ratón sobre ellos,
+       * etc. Los event listener son funciones que se invocan cuando
+       * alguno de ellos sucede. El método addEventListener de un element,
+       * asocia un evento, como "click" (hacer clic en un element) o
+       * "input" (presionar una tecla) con una función event listener.
+       * En este caso, se declara que la funcion "saluda" se invoque
+       * cuando se genere el evento "submit" en la form con name="vista".
+       * El evento submit es la activación de la forma y se genera cuando
+       * se cliquea o se presiona la tecla de espacio sobre un element de
+       * type="submit" dentro de la forma, o cuando se teclea enter con el
+       * foco dentro de un componente de captura de texto dentro de la
+       * forma. */
+      document.vista.addEventListener("submit", saluda);
+      /** Saluda cuando se activa la forma.
+       * @param {Event} evt Descripción del evento que activa la forma. */
+      function saluda(evt) {
+        /* El evento "submit" carga este mismo archivo desde internet (como
+         * en el ejemplo de PHP). En este ejemplo lo que se desea es
+         * procesar sin recargar. Para evitar el comportamiento
+         * predeterminado, se usa el método "preventDefault".  */
+        evt.preventDefault();
+        /* La cláusula "try" contiene código que puede fallar, y al hacerlo,
+        * lanza un error; se aborta la ejecución de las instrucciones
+        * posteriores al punto donde ocurre el fallo y continúa en la
+        * cláusula catch, la cual recibe el error lanzado. */
+        try {
+          /* vista.nombre1
+           * Referencia al componente con name="nombre1" dentro de la
+           * forma a la que apunta la variable vista.
+           *
+           * vista.nombre1.value
+           * Devuelve el valor capturado en el componente "vista.nombre1".
+           *
+           * vista.nombre1.value.trim()
+           * Quita los espacios al inicio y al final del texto capturado
+           * en "vista.nombre1". Prueba que pasa cuando no usas trim y
+           * envías capturas textos con espacios al inicio o al final. */
+          const nombre1 = vista.nombre1.value.trim();
+          const nombre2 = vista.nombre2.value.trim();
+          // Valida los datos.
+          if (!nombre1) {
+            /* Cuando nombre1 es null, undefined, 0 o "", su valor
+             * booleano es falso y por lo mismo !nombre1 es true y entra a
+             * esta parte del código. Al lanzarse el error, el código se
+             * aborta y pasa directamente a la cláusula catch. */
+            throw new Error("Falta el nombre 1");
+          } else if (!nombre2) {
+            throw new Error("Falta el nombre 2");
+          }
+          /* Se evalúan las expresiones modelo.nombre1 y modelo.nombre2,
+           * que están dentro de los delimitadores ${ }, para
+           * posteriormente sustituirlos en los puntos indicados de la
+           * cadena.
+           * El resultado se asigna a la variable "respuesta".
+           * EL TEXTO DE LA CADENA EMPIEZA Y TERMINA CON EL ACENTO
+           * INVERTIDO. */
+          respuesta = `Saludos a ${nombre1} y a ${nombre2}.`;
+        } catch (e) {
+          /* El contenido de catch solo se ejecuta cuando se lanza un
+          * Error.
+          *
+          * e
+          * Es el error lanzado en algún punto dentro de try.
+          * 
+          * e.message
+          * Devuelve el mensaje del error. En este ejemplo, puede ser
+          * "Falta nombre1" cuando se ejecuta la línea 191 o
+          * "Falta nombre2" para el error de la línea 193. */
+          respuesta = e.message;
+        }
+        /* Se asigna valor a la propiedad value del componente con
+         * name="respuesta". Como resultado, se muestra el valor de la
+         * variable "respuesta". */
+        vista.respuesta.value = respuesta;
+      }
+    </script>
+  </body>
+  <footer>
+    Copyright 2020 Ricardo Armando Machorro Reyes.
+  </footer>
+</html>
